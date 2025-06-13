@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>oz_team1.ai - 챗봇</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .chat-bubble {
+      max-width: 80%;
+      padding: 0.75rem 1rem;
+      margin-bottom: 0.5rem;
+      border-radius: 1rem;
+      word-break: break-word;
+    }
+    .user-message {
+      background-color: #3b82f6;
+      color: #fff;
+      margin-left: auto;
+    }
+    .bot-message {
+      background-color: #1f2937;
+      color: #fff;
+      margin-right: auto;
+    }
+    .spinner {
+      border: 2px solid transparent;
+      border-top-color: white;
+      border-radius: 50%;
+      width: 16px;
+      height: 16px;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body class="bg-gray-900 text-white flex flex-col items-center min-h-screen">
+  <div class="w-full max-w-md flex flex-col h-screen">
+
+    <!-- 헤더 -->
+    <header class="bg-gray-800 p-4 flex items-center justify-between shadow">
+      <h1 class="text-xl font-bold text-blue-400">oz_team1.ai</h1>
+      <span class="text-sm text-gray-400">v4.5</span>
+    </header>
+
+    <!-- 채팅 영역 -->
+    <div id="chat-area" class="flex-1 overflow-y-auto p-4 space-y-2"></div>
+
+    <!-- 입력 영역 -->
+    <div class="bg-gray-800 p-4">
+      <div class="flex items-center bg-gray-700 rounded-full px-3 py-2">
+        <input
+          id="user-input"
+          type="text"
+          class="flex-1 bg-transparent text-white placeholder-gray-400 focus:outline-none"
+          placeholder="메시지를 입력하세요..."
+        />
+        <button
+          id="send-button"
+          class="ml-2 w-9 h-9 rounded-full bg-blue-500 hover:bg-blue-600 flex items-center justify-center relative"
+        >
+          <svg id="send-icon" class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+          </svg>
+          <div id="spinner" class="spinner hidden absolute"></div>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const chatArea = document.getElementById('chat-area');
+    const userInput = document.getElementById('user-input');
+    const sendButton = document.getElementById('send-button');
+    const sendIcon = document.getElementById('send-icon');
+    const spinner = document.getElementById('spinner');
+
+    async function typeMessage(text, element) {
+      element.textContent = '';
+      for (const char of text) {
+        element.textContent += char;
+        chatArea.scrollTop = chatArea.scrollHeight;
+        await new Promise(r => setTimeout(r, 20));
+      }
+    }
+
+    function appendUserMessage(text) {
+      const div = document.createElement('div');
+      div.className = 'chat-bubble user-message';
+      div.textContent = text;
+      chatArea.appendChild(div);
+    }
+
+    function appendBotMessage() {
+      const div = document.createElement('div');
+      div.className = 'chat-bubble bot-message';
+      chatArea.appendChild(div);
+      return div;
+    }
+
+    sendButton.addEventListener('click', async () => {
+      const text = userInput.value.trim();
+      if (!text) return;
+
+      appendUserMessage(text);
+      userInput.value = '';
+
+      // 로딩 표시 전환
+      sendIcon.classList.add('hidden');
+      spinner.classList.remove('hidden');
+
+      const responseDiv = appendBotMessage();
+
+      let response = '';
+      if (text.toLowerCase().includes('술 선호도')) {
+        response = '🍶 선호 주류, 💸 소비 패턴 등을 분석하는 ✨ 은하계 영웅들의 술 선호도 설문조사입니다! 👾🚀';
+      } else {
+        response = '질문을 이해하지 못했어요. 다시 말씀해 주세요!';
+      }
+
+      await typeMessage(response, responseDiv);
+
+      // 로딩 표시 원복
+      spinner.classList.add('hidden');
+      sendIcon.classList.remove('hidden');
+      chatArea.scrollTop = chatArea.scrollHeight;
+    });
+
+    // 엔터키 입력 지원
+    userInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') sendButton.click();
+    });
+  </script>
+</body>
+</html>

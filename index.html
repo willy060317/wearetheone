@@ -1,285 +1,319 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>자기소개</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <style>
-        body {
-            background: url('https://cdn.pixabay.com/photo/2016/11/29/05/45/astronomy-1867616_1280.jpg') no-repeat center center fixed;
-            background-size: cover;
-            color: #fff;
-            overflow-x: hidden;
-            font-family: 'Arial', sans-serif;
-        }
-        .card {
-            background: rgba(0, 0, 0, 0.8);
-            border: 1px solid #4b5e7e;
-            transition: transform 0.3s;
-        }
-        .card:hover {
-            transform: scale(1.03);
-        }
-        .icon { color: #4b5e7e; }
-        .profile-img { object-fit: cover; object-position: center; }
-        .crawl-container {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #000;
-            perspective: 500px;
-            overflow: hidden;
-            z-index: 50;
-        }
-        .crawl-stars {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 51;
-        }
-        .crawl-star {
-            position: absolute;
-            background: #fff;
-            border-radius: 50%;
-            opacity: 0.6;
-            animation: twinkle 3s infinite alternate;
-        }
-        @keyframes twinkle {
-            0% { opacity: 0.3; }
-            100% { opacity: 0.7; }
-        }
-        .crawl {
-            position: relative;
-            top: 100%;
-            transform-origin: 50% 100%;
-            transform: rotateX(25deg);
-            color: #ffd700;
-            font-family: 'Arial', sans-serif;
-            font-size: 2rem;
-            font-weight: bold;
-            text-align: center;
-            width: 70%;
-            margin: 0 auto;
-            animation: crawl 60s linear forwards;
-            opacity: 0;
-            animation-delay: 2s;
-        }
-        @keyframes crawl {
-            0% { top: 100%; opacity: 0; }
-            10% { opacity: 1; }
-            90% { top: -40%; opacity: 1; }
-            100% { top: -50%; opacity: 0; }
-        }
-        .crawl.red { color: #ffd700; }
-        .crawl.yellow { color: #ffd700; }
-        .crawl.green { color: #ffd700; }
-        .crawl.blue { color: #ffd700; }
-        .close-btn {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: rgba(255, 255, 255, 0.2);
-            color: #fff;
-            border: none;
-            padding: 10px;
-            cursor: pointer;
-            z-index: 60;
-            border-radius: 50%;
-        }
-        .close-btn:hover { background: rgba(255, 255, 255, 0.4); }
-        .back-btn {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            background: rgba(255, 255, 255, 0.2);
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            z-index: 60;
-            border-radius: 5px;
-        }
-        .back-btn:hover { background: rgba(255, 255, 255, 0.4); }
-        .stars {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
-        }
-        .star {
-            position: absolute;
-            background: #fff;
-            border-radius: 50%;
-            opacity: 0.5;
-            animation: twinkle 3s infinite alternate;
-        }
-        .spaceship {
-            position: fixed;
-            width: 80px;
-            height: 40px;
-            background: url('https://cdn.pixabay.com/photo/2016/04/02/22/05/spaceship-1302969_1280.png') no-repeat center;
-            background-size: contain;
-            z-index: 40;
-            animation: fly 25s linear infinite;
-            opacity: 0.7;
-        }
-        @keyframes fly {
-            0% { transform: translate(-100px, 100vh); }
-            100% { transform: translate(100vw, -100px); }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>X 스타일 챗봇 UI</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .chat-message {
+      background-color: #48576f;
+      border-radius: 1rem;
+      padding: 0.75rem;
+      margin-bottom: 0.5rem;
+      max-width: 80%;
+      word-wrap: break-word;
+    }
+    .bot-message {
+      background-color: #0e1114;
+      color: white;
+    }
+    .hero-button {
+      background-color: #1e40af;
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      margin-top: 0.5rem;
+      display: inline-block;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+    }
+    .hero-button:hover {
+      background-color: #1e3a8a;
+    }
+    .bot-image {
+      max-width: 100%;
+      border-radius: 0.5rem;
+      margin-top: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+  </style>
 </head>
-<body class="min-h-screen flex flex-col items-center py-10">
-    <div class="stars" id="stars"></div>
-    <div class="spaceship"></div>
-    <h1 class="text-5xl font-bold mb-10 text-white">Galactic 자기소개</h1>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-5xl px-4">
-        <!-- 정상운 -->
-        <div class="card rounded-lg shadow-lg p-6">
-            <img src="https://cdn.openart.ai/uploads/image_9A98jgQH_1749744311972_512.webp" alt="정상운" class="w-full h-64 profile-img rounded-t-lg">
-            <h2 class="text-2xl font-semibold mt-4"><i class="fas fa-user-astronaut icon mr-2"></i>정상운</h2>
-            <p class="text-gray-400">성격: 까칠한 우주 탐험가</p>
-            <button onclick="showCrawl('정상운', 'red')" class="mt-2 w-full bg-gray-700 text-white py-2 rounded-lg hover:bg-gray-600"><i class="fas fa-rocket mr-2"></i>자기소개 탐험</button>
-        </div>
-        <!-- 임우진 -->
-        <div class="card rounded-lg shadow-lg p-6">
-            <img src="https://cdn.openart.ai/uploads/image_mu_L0J5r_1749744368404_512.webp" alt="임우진" class="w-full h-64 profile-img rounded-t-lg">
-            <h2 class="text-2xl font-semibold mt-4"><i class="fas fa-user-astronaut icon mr-2"></i>임우진</h2>
-            <p class="text-gray-400">성격: 따뜻한 은하 리더</p>
-            <button onclick="showCrawl('임우진', 'yellow')" class="mt-2 w-full bg-gray-700 text-white py-2 rounded-lg hover:bg-gray-600"><i class="fas fa-rocket mr-2"></i>자기소개 탐험</button>
-        </div>
-        <!-- 박동재 -->
-        <div class="card rounded-lg shadow-lg p-6">
-            <img src="https://cdn.openart.ai/uploads/image_k_nhHDyP_1749744411225_512.webp" alt="박동재" class="w-full h-64 profile-img rounded-t-lg">
-            <h2 class="text-2xl font-semibold mt-4"><i class="fas fa-user-astronaut icon mr-2"></i>박동재</h2>
-            <p class="text-gray-400">성격: 신중한 별 꿈꾸는 자</p>
-            <button onclick="showCrawl('박동재', 'green')" class="mt-2 w-full bg-gray-700 text-white py-2 rounded-lg hover:bg-gray-600"><i class="fas fa-rocket mr-2"></i>자기소개 탐험</button>
-        </div>
-        <!-- 양지웅 -->
-        <div class="card rounded-lg shadow-lg p-6">
-            <img src="https://cdn.openart.ai/uploads/image_eK3rcM62_1749744619365_512.webp" alt="양지웅" class="w-full h-64 profile-img rounded-t-lg">
-            < Vedas
-            <h2 class="text-2xl font-semibold mt-4"><i class="fas fa-user-astronaut icon mr-2"></i>양지웅</h2>
-            <p class="text-gray-400">성격: 조용한 우주 비전가</p>
-            <button onclick="showCrawl('양지웅', 'blue')" class="mt-2 w-full bg-gray-700 text-white py-2 rounded-lg hover:bg-gray-600"><i class="fas fa-rocket mr-2"></i>자기소개 탐험</button>
-        </div>
+<body class="bg-gray-900 text-white flex flex-col items-center min-h-screen">
+  <div class="w-full max-w-md flex flex-col h-screen">
+    <!-- 헤더 -->
+    <header class="bg-gray-800 p-4 flex items-center justify-between">
+      <h1 class="text-xl font-bold">oz_team1.ai</h1>
+      <span class="text-sm text-gray-400">oz_team 4.5</span>
+    </header>
+    <!-- 채팅 영역 -->
+    <div id="chat-area" class="flex-1 overflow-y-auto p-4"></div>
+    <!-- 입력 영역 -->
+    <div class="bg-gray-800 p-4">
+      <div class="flex items-center bg-white rounded-3xl p-2">
+        <input
+          id="user-input"
+          type="text"
+          class="flex-1 bg-transparent text-black focus:outline-none px-3 placeholder-gray-400"
+          placeholder="메시지를 입력하세요..."
+        />
+        <button
+          id="send-button"
+          class="bg-blue-500 hover:bg-blue-600 rounded-full p-2 ml-2 relative flex items-center justify-center w-9 h-9"
+        >
+          <svg id="airplane-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+          </svg>
+          <div id="loading-square" class="hidden absolute w-4 h-4 bg-black"></div>
+        </button>
+      </div>
     </div>
-    <div id="crawl-container" class="crawl-container">
-        <div class="crawl-stars" id="crawl-stars"></div>
-        <button class="close-btn" onclick="closeCrawl()"><i class="fas fa-times"></i></button>
-        <button class="back-btn" onclick="closeCrawl()">은하계로 귀환</button>
-        <div id="crawl-text" class="crawl"></div>
-    </div>
-    <script>
-        function showCrawl(name, color) {
-            const crawlContainer = document.getElementById('crawl-container');
-            const crawlText = document.getElementById('crawl-text');
-            const crawlStars = document.getElementById('crawl-stars');
-            let introText;
+  </div>
+  <script>
+    const sendButton = document.getElementById('send-button');
+    const airplaneIcon = document.getElementById('airplane-icon');
+    const loadingSquare = document.getElementById('loading-square');
+    const userInput = document.getElementById('user-input');
+    const chatArea = document.getElementById('chat-area');
 
-            // Clear previous stars
-            crawlStars.innerHTML = '';
+    // 한 글자씩 출력하는 함수
+    async function typeMessage(message, element) {
+      element.textContent = '';
+      for (let char of message) {
+        element.textContent += char;
+        await new Promise(resolve => setTimeout(resolve, 20));
+        chatArea.scrollTop = chatArea.scrollHeight;
+      }
+    }
 
-            // Generate subtle stars for crawl container
-            for (let i = 0; i < 50; i++) {
-                const star = document.createElement('div');
-                star.className = 'crawl-star';
-                star.style.width = `${Math.random() * 1.5 + 0.5}px`;
-                star.style.height = star.style.width;
-                star.style.left = `${Math.random() * 100}%`;
-                star.style.top = `${Math.random() * 100}%`;
-                star.style.animationDelay = `${Math.random() * 3}s`;
-                crawlStars.appendChild(star);
-            }
+    sendButton.addEventListener('click', async () => {
+      if (!userInput.value.trim()) return;
 
-            switch (name) {
-                case '정상운':
-                    introText = `
-                        정상운 소개
-                        Episode I
-                        The Gruff Cosmic Innovator
+      // 사용자 메시지 추가
+      const userMessageDiv = document.createElement('div');
+      userMessageDiv.className = 'chat-message ml-auto';
+      userMessageDiv.textContent = userInput.value;
+      chatArea.appendChild(userMessageDiv);
 
-                        오래전, 은하계의 혼란 속에 한 인물이 등장했다. 정상운, 까칠한 성격의 그는 우주선의 날카로운 엔진처럼 예리한 지성과 창의력을 지녔다.
-                        그의 직설적인 태도는 종종 성운의 폭풍을 일으키지만, 이는 그의 열정과 진실 추구에서 비롯된다. 그는 우주적 난제를 직시하며, 블랙�홀 속에서도 길을 찾아내는 해결사다.
-                        정상운은 기술과 예술의 성간 경계에서 독보적인 프로젝트를 이끌었다. 그의 손에서 탄생한 아이디어들은 별들을 놀라게 했으며, 승무원들은 그의 비전 아래 불가능을 가능으로 바꾸었다.
-                        그는 끝없는 호기심으로 우주의 지식을 탐구하며, 자신의 한계를 초월하는 것을 두려워하지 않는다. 그의 까칠함은 단순한 성격이 아니라, 완벽을 추구하는 별빛의 반영이다.
-                        이제, 정상운은 새로운 항성을 향한 도전을 준비한다. 그의 다음 항로는 어떤 혁신을 가져올 것인가? 그의 우주 여정은 이제 막 시작되었다...
-                    `;
-                    break;
-                case '임우진':
-                    introText = `
-                        임우진 소개
-                        Episode II
-                        The Warm Galactic Leader
+      // 입력 필드 초기화
+      const userQuery = userInput.value.trim().toLowerCase();
+      userInput.value = '';
 
-                        은하계의 중심, 모든 이를 하나로 묶는 따뜻한 별이 있다. 임우진, 그는 긍정의 에너지와 친절함으로 모든 우주인의 마음을 사로잡는다.
-                        그의 미소는 블랙홀의 어둠 속에서도 빛을 발하며, 승무원들에게 희망과 용기를 불어넣는다. 임우진은 단순한 함장이 아니다. 그는 우주인들의 잠재력을 발견하고, 그들이 스스로 별처럼 빛나도록 돕는 멘토다.
-                        그의 리더십은 포용과 이해에서 비롯된다. 그는 다양한 항성계 출신의 우주인들과 협력하며, 은하 전쟁 속에서도 조화를 이루는 놀라운 능력을 지녔다.
-                        임우진은 소행성 벨트의 봉사 활동부터 은하 규모의 프로젝트까지, 자신의 따뜻한 마음을 우주에 전파해왔다. 그의 노력은 수많은 별들에게 영감을 주었으며, 그의 이름은 신뢰와 존경의 초신성이다.
-                        지금, 임우진은 새로운 은하로 나아가고 있다. 그의 따뜻한 빛이 닿는 곳마다, 새로운 가능성이 성운처럼 피어날 것이다. 그의 이야기는 아직 끝나지 않았다...
-                    `;
-                    break;
-                case '박동재':
-                    introText = `
-                        박동재 소개
-                        Episode III
-                        The Cautious Star Dreamer
+      // 로딩 상태: 비행기 숨기고 검은 사각형 표시
+      airplaneIcon.classList.add('hidden');
+      loadingSquare.classList.remove('hidden');
 
-                        고요한 은하의 한 구석, 신중한 꿈꾸는 자가 있다. 박동재, 그의 조심스러운 태도 뒤에는 깊은 사색과 우주적 꿈이 숨겨져 있다.
-                        그는 모든 항로를 세심히 검토하며, 디테일에 대한 집착으로 별빛처럼 완벽한 결과를 만들어낸다. 그의 신중함은 단순한 망설임이 아니라, 책임감과 헌신의 항성이다.
-                        박동재는 복잡한 우주 문제를 체계적으로 분석하며, 초공간 돌풍 속에서도 침착함을 잃지 않는다. 그의 동료들은 그의 조언을 신뢰하며, 그의 통찰력에 의지한다.
-                        그는 학문과 실무를 아우르는 다재다능한 항법사로, 자신의 분야에서 꾸준히 별자리를 그려왔다. 그의 노력은 종종 은하의 그림자 속에 숨겨지지만, 그 결과는 항상 초신성처럼 빛난다.
-                        박동재는 이제 새로운 항성계를 향한 도약을 준비한다. 그의 신중한 발걸음이 이끄는 곳은 어디일까? 그의 꿈은 이제 우주의 현실이 될 준비를 마쳤다...
-                    `;
-                    break;
-                case '양지웅':
-                    introText = `
-                        양지웅 소개
-                        Episode IV
-                        The Shy Cosmic Visionary
+      // 키워드 확인
+      if (userQuery.includes('술 선호도')) {
+        const botMessage = '사용자의 🍶선호 주류, 💸소비 패턴 등을 파악하기 위한✨은하계 영웅이 은하계를 구하기 위해 만들어진 술 선호도 설문조사입니다 👾🚀';
+        
+        // 봇 메시지 div 생성
+        const botMessageDiv = document.createElement('div');
+        botMessageDiv.className = 'chat-message bot-message mr-auto';
+        chatArea.appendChild(botMessageDiv);
 
-                        은하계의 가장 조용한 항성 아래, 매우 신중한 비전가가 있다. 양지웅, 그는 말보다 행동으로 자신의 가치를 증명하는 우주인이다.
-                        그의 겸손한 태도 뒤에는 우주를 바꿀 거대한 비전이 숨겨져 있다. 그는 소행성의 작은 디테일에도 주의를 기울이며, 자신의 아이디어를 성운처럼 치밀하게 다듬는다.
-                        양지웅은 기술, 예술, 우주적 가치를 융합하는 독특한 프로젝트로 주목받았다. 그의 작업은 단순한 결과물이 아니라, 은하계의 삶을 변화시키는 별의 이야기다.
-                        그는 협업 속에서도 자신의 빛을 잃지 않으며, 조용히 함선을 이끄는 힘을 보여준다. 그의 동료들은 그의 침착함과 통찰력에 깊은 신뢰를 보낸다.
-                        이제, 양지웅은 더 큰 은하 무대로 나아갈 준비를 하고 있다. 그의 비전은 아직 완성되지 않았다. 그의 다음 이야기는 무엇일까? 우주는 그의 발걸음을 주시하고 있다...
-                    `;
-                    break;
-            }
+        // 한 글자씩 출력
+        await typeMessage(botMessage, botMessageDiv);
 
-            crawlText.innerText = introText;
-            crawlText.className = `crawl ${color}`;
-            crawlContainer.style.display = 'block';
-        }
+        // 영웅소개서 보러가기 버튼 추가
+        const buttonDiv = document.createElement('div');
+        buttonDiv.className = 'chat-message bot-message mr-auto';
+        buttonDiv.innerHTML = '<a href="intro.html" target="_blank" class="hero-button">영웅소개서 보러가기</a>';
+        chatArea.appendChild(buttonDiv);
+      } else if (userQuery.includes('어려운')) {
+        // 첫 번째 텍스트 부분
+        const firstMessage = `✨ 기술 스택 간단히 설명드릴게요!
 
-        function closeCrawl() {
-            const crawlContainer = document.getElementById('crawl-container');
-            crawlContainer.style.display = 'none';
-        }
+- **백엔드**: Python + Flask로 REST API 구축. 회원가입 예시:`;
+        
+        // 봇 메시지 div 생성 (첫 번째 부분)
+        const botMessageDiv1 = document.createElement('div');
+        botMessageDiv1.className = 'chat-message bot-message mr-auto';
+        chatArea.appendChild(botMessageDiv1);
+        await typeMessage(firstMessage, botMessageDiv1);
 
-        // Generate subtle stars for main page
-        const starsContainer = document.getElementById('stars');
-        for (let i = 0; i < 100; i++) {
-            const star = document.createElement('div');
-            star.className = 'star';
-            star.style.width = `${Math.random() * 2 + 0.5}px`;
-            star.style.height = star.style.width;
-            star.style.left = `${Math.random() * 100}vw`;
-            star.style.top = `${Math.random() * 100}vh`;
-            star.style.animationDelay = `${Math.random() * 3}s`;
-            starsContainer.appendChild(star);
-        }
-    </script>
+        // 이미지 추가
+        const imageDiv = document.createElement('div');
+        imageDiv.className = 'chat-message bot-message mr-auto';
+        imageDiv.innerHTML = '<img src="https://postfiles.pstatic.net/MjAyNTA2MTRfMzQg/MDAxNzQ5ODM5NDkzNTY2.TKMVR3ZAB6NxCC_gZ_J7Kyt8rdJCym_WbQ9GdWcG4MAg.xxzYgkW_KPYcbdmP23Ymq03fdeVxQmKXfty29bXJsUcg.PNG/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2025-06-14_%EC%98%A4%EC%A0%84_3.27.25.png?type=w966" alt="Tech Stack Code" class="bot-image">';
+        chatArea.appendChild(imageDiv);
+
+        // 두 번째 텍스트 부분
+        const secondMessage = `데이터는 SQLAlchemy로 깔끔하게 SQLite에 저장돼요. 🗂️
+복잡한 DB 작업도 Python처럼 쉽게 처리하죠. 🧙‍♂️
+
+프론트는 HTML, JavaScript, Bootstrap으로 꾸몄고 🎨
+입력한 정보는 RESTful API로 백엔드에 쏙! 📩
+
+배포는 AWS EC2로, 언제 어디서나 안정적으로 작동해요. ☁️🛡️
+
+한마디로,
+Flask의 속도⚡ + SQLAlchemy의 편리함🛠️ + Bootstrap의 스타일✨ + AWS의 안정성🔒
+이 조합으로 뚝딱 완성한 결과물이에요! 🤖
+
+궁금한 거 있으면 언제든 물어보세요! 💬`;
+        
+        // 봇 메시지 div 생성 (두 번째 부분)
+        const botMessageDiv2 = document.createElement('div');
+        botMessageDiv2.className = 'chat-message bot-message mr-auto';
+        chatArea.appendChild(botMessageDiv2);
+        await typeMessage(secondMessage, botMessageDiv2);
+      } else if (userQuery.includes('질문')) {
+        // 첫 번째 텍스트 부분
+        const firstMessage = `와, 질문 등록하고 조회까지 되는 거 신기하죠? 🤩
+이 기능, 몇 가지 똑똑한 기술로 쉽게 구현했어요! 🛠️✨
+
+질문 등록은 Python과 Flask로 만든 백엔드에서
+/question 엔드포인트로 처리돼요. 📮
+
+사용자가 질문 제목, 이미지 ID, 순서를 보내면…`;
+        
+        // 봇 메시지 div 생성 (첫 번째 부분)
+        const botMessageDiv1 = document.createElement('div');
+        botMessageDiv1.className = 'chat-message bot-message mr-auto';
+        chatArea.appendChild(botMessageDiv1);
+        await typeMessage(firstMessage, botMessageDiv1);
+
+        // 이미지 추가
+        const imageDiv = document.createElement('div');
+        imageDiv.className = 'chat-message bot-message mr-auto';
+        imageDiv.innerHTML = '<img src="https://postfiles.pstatic.net/MjAyNTA2MTRfMjA3/MDAxNzQ5ODM5NDkzNTYy.3zpNWS-IRYcF5JRBZyoKOBNXVKjoGMSO9FZqwl4PUw4g.CJjNVb1pVuQ3kXxcpyXKs3NFo5qek4nbjVM2oMWQOpQg.PNG/%EC%8A%A4%ED%81%AC%EB%A6%B4%EC%83%B7_2025-06-14_%EC%98%A4%EC%A0%84_3.29.10.png?type=w966" alt="Question Endpoint Code" class="bot-image">';
+        chatArea.appendChild(imageDiv);
+
+        // 두 번째 텍스트 부분
+        const secondMessage = `질문 등록은 Flask + SQLAlchemy로 처리돼요. 📝
+제목, 이미지 ID, 순서를 받아 SQLite에 저장하죠. 💾
+이미지와 순서를 활용해 더 생동감 있는 설문이 가능해요! 🖼️🔢
+
+조회는 /questions 엔드포인트로 쏙! 📡
+RESTful API로 프론트와 연결돼 있어서
+HTML + JS + Bootstrap으로 깔끔하게 보여줄 수 있어요. 💻✨
+
+그리고 이 모든 건 AWS EC2에서 안정적으로 돌아가요! ☁️🛡️
+등록 → 저장 → 조회까지, 뿅! 하고 완성! 🎯
+
+궁금한 거 있으면 언제든 말해주세요! 🤖💬`;
+        
+        // 봇 메시지 div 생성 (두 번째 부분)
+        const botMessageDiv2 = document.createElement('div');
+        botMessageDiv2.className = 'chat-message bot-message mr-auto';
+        chatArea.appendChild(botMessageDiv2);
+        await typeMessage(secondMessage, botMessageDiv2);
+      } else if (userQuery.includes('선택지')) {
+        // 첫 번째 텍스트 부분
+        const firstMessage = `헉, 선택지 등록에 사용자 답변까지 된다니! 🤯
+진짜 신기하죠? 이 기능도 똑똑한 기술로 쉽게 구현했어요! 🛠️
+
+✅ 선택지 등록은 /choice 엔드포인트로 처리돼요.
+관리자가 보낸 선택지를 Flask가 받아
+SQLAlchemy로 SQLite에 깔끔하게 저장하죠. 📥🗂️
+
+🙋‍♀️ 사용자 답변은 /submit에서 처리돼요.
+사용자가 선택한 답을 백엔드가 받아 DB에 저장! 💬➡️💾
+
+코드 보면 이렇게 돼요:`;
+        
+        // 봇 메시지 div 생성 (첫 번째 부분)
+        const botMessageDiv1 = document.createElement('div');
+        botMessageDiv1.className = 'chat-message bot-message mr-auto';
+        chatArea.appendChild(botMessageDiv1);
+        await typeMessage(firstMessage, botMessageDiv1);
+
+        // 이미지 추가
+        const imageDiv = document.createElement('div');
+        imageDiv.className = 'chat-message bot-message mr-auto';
+        imageDiv.innerHTML = '<img src="https://postfiles.pstatic.net/MjAyNTA2MTRfMjM4/MDAxNzQ5ODM5NDkzNTcw.7JvLpTOnytp341J1zwz0gQetW1nbLHvdwPUJBO6L0AAg.oOa-_eJFp7eKvsqUysiwx_5D2VBBL4V12AU5Pkwup7cg.PNG/%EC%8A%A4%ED%81%AC%EB%A6%B4%EC%83%B7_2025-06-14_%EC%98%A4%EC%A0%84_3.29.41.png?type=w966" alt="Choice Endpoint Code" class="bot-image">';
+        chatArea.appendChild(imageDiv);
+
+        // 두 번째 텍스트 부분
+        const secondMessage = `사용자가 고른 선택지는
+user_id와 choice_id로 받아 Answer 테이블에 저장돼요. 📝
+이 데이터는 나중에 통계 분석에 쓰여서
+어떤 선택지가 인기였는지 한눈에 확인할 수 있죠! 📊✨
+
+프론트엔드는 HTML + JS + Bootstrap으로
+직관적이고 예쁘게! 💻🎨
+선택 → 제출이 아주 간편해요. 👆✅
+
+RESTful API로 프론트와 백엔드가 쌕쌕~ 빠르게 소통하고, 🔄
+AWS EC2 서버에서 안정적으로 돌아가요. ☁️💪
+
+나중엔 status_routes.py에서
+질문별 선택지 비율을 그래프로 시각화할 수도 있어요! 📈🧠
+
+즉,
+Flask로 빠른 API ⚡
+SQLAlchemy로 깔끔한 저장 🗂️
+AWS로 튼튼한 서버 ☁️
+Bootstrap으로 예쁜 UI ✨
+
+이 기술들이 멋지게 협업한 결과예요! 🤝
+더 궁금한 거 있으면 언제든지 물어보세요! 🤖💬`;
+        
+        // 봇 메시지 div 생성 (두 번째 부분)
+        const botMessageDiv2 = document.createElement('div');
+        botMessageDiv2.className = 'chat-message bot-message mr-auto';
+        chatArea.appendChild(botMessageDiv2);
+        await typeMessage(secondMessage, botMessageDiv2);
+      } else if (userQuery.includes('디렉토리')) {
+        // 이미지 추가
+        const imageDiv = document.createElement('div');
+        imageDiv.className = 'chat-message bot-message mr-auto';
+        imageDiv.innerHTML = '<img src="https://postfiles.pstatic.net/MjAyNTA2MTRfMTAy/MDAxNzQ5ODM5NDkzNTY4.Ojo0Tmg3iVe-17Z-8-PTCe4THbVrsMrWaUx4YTdZp4Ug.o78KRgNliQSFtm6LEnpfl0NZNfmTa6AAAb_90Vti60cg.PNG/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2025-06-14_%EC%98%A4%EC%A0%84_3.30.14.png?type=w966" alt="Directory Structure" class="bot-image">';
+        chatArea.appendChild(imageDiv);
+
+        // 텍스트 부분
+        const botMessage = `프로젝트는 기능 단위로 모듈화돼 있어요! 🧩
+
+📁 routes/ 디렉토리엔
+기능별 API 라우터가 나눠져 있고,
+
+📄 models.py엔
+DB 테이블이 정리돼 있어요. 🗂️
+
+⚙️ 실행 환경에 따라
+run.py (로컬) 🖥️ / wsgi.py (배포용) ☁️
+진입점이 구분돼 있죠.
+
+깔끔한 구조 덕분에 유지보수도 쉽고 확장도 편해요! 🚀`;
+        
+        // 봇 메시지 div 생성
+        const botMessageDiv = document.createElement('div');
+        botMessageDiv.className = 'chat-message bot-message mr-auto';
+        chatArea.appendChild(botMessageDiv);
+        await typeMessage(botMessage, botMessageDiv);
+      } else if (userQuery.includes('고마워')) {
+        const botMessage = '별말씀을! 😊 Team1.AI의 비전을 스타워즈 스타일로 소개해드릴게요!';
+        
+        // 봇 메시지 div 생성
+        const botMessageDiv = document.createElement('div');
+        botMessageDiv.className = 'chat-message bot-message mr-auto';
+        chatArea.appendChild(botMessageDiv);
+
+        // 한 글자씩 출력
+        await typeMessage(botMessage, botMessageDiv);
+
+        // Team1.AI 크롤 페이지 버튼 추가
+        const buttonDiv = document.createElement('div');
+        buttonDiv.className = 'chat-message bot-message mr-auto';
+        buttonDiv.innerHTML = '<a href="crawl.html" target="_blank" class="hero-button">Team1.AI 비전 보러가기</a>';
+        chatArea.appendChild(buttonDiv);
+      } else {
+        // 기본 응답
+        const botMessageDiv = document.createElement('div');
+        botMessageDiv.className = 'chat-message bot-message mr-auto';
+        chatArea.appendChild(botMessageDiv);
+        await typeMessage('질문을 이해하지 못했어요. 다시 말씀해 주세요!', botMessageDiv);
+      }
+
+      // 로딩 상태 종료: 비행기 표시, 사각형 숨김
+      airplaneIcon.classList.remove('hidden');
+      loadingSquare.classList.add('hidden');
+
+      // 스크롤 최하단으로 유지
+      chatArea.scrollTop = chatArea.scrollHeight;
+    });
+  </script>
 </body>
 </html>
