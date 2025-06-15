@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Team1.AI - 허용된 키워드</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    .glassmorphism {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 1rem;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .fade-in-section {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    .fade-in-section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .home-button {
+      position: fixed;
+      bottom: 1rem;
+      left: 1rem;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      border-radius: 50%;
+      padding: 0.75rem;
+      transition: background 0.3s ease;
+    }
+    .home-button:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+  </style>
+</head>
+<body class="bg-gray-900 text-white dark:bg-gray-900 min-h-screen flex flex-col items-center">
+  <!-- 헤더 -->
+  <header class="w-full max-w-4xl px-4 py-6 flex justify-between items-center">
+    <h1 class="text-2xl font-bold">Team1.AI</h1>
+    <button id="theme-toggle" class="p-2 rounded-full bg-gray-800 hover:bg-gray-700">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+      </svg>
+    </button>
+  </header>
+
+  <!-- 메인 콘텐츠 -->
+  <main class="w-full max-w-4xl px-4 flex-1">
+    <!-- 키워드 섹션 -->
+    <section class="py-12 fade-in-section">
+      <h2 class="text-3xl font-bold mb-6 text-center">은하계 허용 키워드</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="glassmorphism p-4">
+          <h3 class="text-lg font-semibold">술 선호도</h3>
+          <p class="text-sm text-gray-300">술 선호도 조사 소개</p>
+          <p class="text-sm text-gray-400">버튼: 영웅소개서 보러가기 (intro.html)</p>
+        </div>
+        <div class="glassmorphism p-4">
+          <h3 class="text-lg font-semibold">해야,api url</h3>
+          <p class="text-sm text-gray-300">파워링크 안내,api url 고지</p>
+          <p class="text-sm text-gray-400">버튼: 파워링크 보러가기 (https://3.107.8.91/)</p>
+        </div>
+        <div class="glassmorphism p-4">
+          <h3 class="text-lg font-semibold">어려운</h3>
+          <p class="text-sm text-gray-300">기술 스택 설명</p>
+          <p class="text-sm text-gray-400">이미지: 기술 예시</p>
+        </div>
+        <div class="glassmorphism p-4">
+          <h3 class="text-lg font-semibold">질문</h3>
+          <p class="text-sm text-gray-300">질문 등록/조회 설명</p>
+          <p class="text-sm text-gray-400">이미지: API 코드</p>
+        </div>
+        <div class="glassmorphism p-4">
+          <h3 class="text-lg font-semibold">선택지</h3>
+          <p class="text-sm text-gray-300">선택지 등록/답변 처리</p>
+          <p class="text-sm text-gray-400">이미지: 코드 예시</p>
+        </div>
+        <div class="glassmorphism p-4">
+          <h3 class="text-lg font-semibold">디렉토리</h3>
+          <p class="text-sm text-gray-300">프로젝트 구조 설명</p>
+          <p class="text-sm text-gray-400">이미지: 디렉토리 구조</p>
+        </div>
+        <div class="glassmorphism p-4">
+          <h3 class="text-lg font-semibold">고마워</h3>
+          <p class="text-sm text-gray-300">감사 인사</p>
+          <p class="text-sm text-gray-400">동작: crawl.html 새 창</p>
+        </div>
+        <div class="glassmorphism p-4">
+          <h3 class="text-lg font-semibold">oz-team1</h3>
+          <p class="text-sm text-gray-300">OZ-Team1의 기밀 정보 송신</p>
+          <p class="text-sm text-gray-400">동작: imnotfool.html로 이동</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 비전 섹션 -->
+    <section class="py-12 fade-in-section">
+      <h2 class="text-3xl font-bold mb-6 text-center">임우진의 비전</h2>
+      <div class="glassmorphism p-6">
+        <p class="text-lg mb-4">Team1.AI는 임우진의 비전으로 탄생했어요. 🌌 단순한 대화형 AI를 넘어, 사용자가 원하는 걸 **직관적이고 실질적으로** 해결해주는 AI를 만들고 싶었죠.</p>
+        <p class="text-sm text-gray-300 mb-4">예를 들어, "홈페이지 만드는 법 알려줘"라고 하면, 텍스트 설명만으론 부족하잖아요. 그래서 Team1.AI는:</p>
+        <ul class="list-disc list-inside text-sm text-gray-300 space-y-2">
+          <li>📽️ <strong>영상</strong>으로 단계별 안내를 보여주거나,</li>
+          <li>🖼️ <strong>사진</strong>으로 시각적 가이드를 제공하거나,</li>
+          <li>🧩 <strong>3D 모델링</strong>으로 복잡한 개념을 쉽게 설명하거나,</li>
+          <li>📱 <strong>핸드폰 권한</strong>을 연동해 사용자가 원하는 작업을 직접 처리해요.</li>
+        </ul>
+        <p class="text-sm text-gray-300 mt-4">이 모든 건 사용자가 더 편하고, 더 빠르게, 더 멋지게 목표를 이루도록 돕기 위해서예요. 🚀</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- 푸터 -->
+  <footer class="w-full max-w-4xl px-4 py-6 text-center text-gray-400 text-sm">
+    © 2025 Team1.AI. All rights reserved.
+  </footer>
+
+  <!-- 홈 버튼 -->
+  <button class="home-button" onclick="window.location.href='index.html'" title="챗봇으로 돌아가기">
+    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+    </svg>
+  </button>
+
+  <script>
+    // 다크/라이트 모드 토글
+    const themeToggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+    themeToggle.addEventListener('click', () => {
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+    if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      html.classList.add('dark');
+    }
+
+    // 스크롤 애니메이션
+    const sections = document.querySelectorAll('.fade-in-section');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+    sections.forEach(section => observer.observe(section));
+  </script>
+</body>
+</html>
