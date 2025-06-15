@@ -1,55 +1,39 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>oz_team1.ai: 챗봇 & 자기소개</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>자기소개</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
   <style>
-    .chat-message {
-      background-color: #48576f;
-      border-radius: 1rem;
-      padding: 0.75rem;
-      margin-bottom: 0.5rem;
-      max-width: 80%;
-      word-wrap: break-word;
-    }
-    .bot-message {
-      background-color: #0e1114;
-      color: white;
-    }
-    .hero-button {
-      background-color: #1e40af;
-      color: white;
-      padding: 0.5rem 1rem;
-      border-radius: 0.5rem;
-      margin-top: 0.5rem;
-      display: inline-block;
-      cursor: pointer;
-      text-align: center;
-      text-decoration: none;
-    }
-    .hero-button:hover {
-      background-color: #1e3a8a;
-    }
     body {
-      background: url('https://cdn.pixabay.com/photo/2016/11/29/05/45/astronomy-1867616_1280.jpg') no-repeat center center fixed;
+      background: url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1740&q=80') no-repeat center center fixed;
       background-size: cover;
       color: #fff;
       overflow-x: hidden;
-      font-family: 'Arial', sans-serif;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
     }
+
     .card {
-      background: rgba(0, 0, 0, 0.8);
+      background: rgba(0, 0, 0, 0.7);
       border: 1px solid #4b5e7e;
       transition: transform 0.3s;
     }
+
     .card:hover {
       transform: scale(1.03);
     }
-    .icon { color: #4b5e7e; }
-    .profile-img { object-fit: cover; object-position: center; }
+
+    .icon {
+      color: #4b5e7e;
+    }
+
+    .profile-img {
+      object-fit: cover;
+      object-position: center;
+    }
+
     .crawl-container {
       display: none;
       position: fixed;
@@ -57,57 +41,32 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: #000;
-      perspective: 500px;
-      overflow: hidden;
+      background: rgba(0, 0, 0, 0.85);
       z-index: 50;
+      overflow-y: auto;
+      padding: 4rem 2rem;
     }
-    .crawl-stars {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 51;
-    }
-    .crawl-star {
-      position: absolute;
-      background: #fff;
-      border-radius: 50%;
-      opacity: 0.6;
-      animation: twinkle 3s infinite alternate;
-    }
-    @keyframes twinkle {
-      0% { opacity: 0.3; }
-      100% { opacity: 0.7; }
-    }
+
     .crawl {
-      position: relative;
-      top: 100%;
-      transform-origin: 50% 100%;
-      transform: rotateX(25deg);
-      color: #ffd700;
-      font-family: 'Arial', sans-serif;
-      font-size: 2rem;
-      font-weight: bold;
-      text-align: center;
-      width: 70%;
-      margin: 0 auto;
-      animation: crawl 30s linear forwards;
       opacity: 0;
-      animation-delay: 2s;
+      transform: translateY(40px);
+      animation: appleCrawl 2s ease-out forwards;
+      font-size: 1.5rem;
+      font-weight: 300;
+      line-height: 2;
+      text-align: left;
+      max-width: 800px;
+      margin: 0 auto;
+      white-space: pre-line;
     }
-    @keyframes crawl {
-      0% { top: 100%; opacity: 0; }
-      10% { opacity: 1; }
-      90% { top: -40%; opacity: 1; }
-      100% { top: -50%; opacity: 0; }
+
+    @keyframes appleCrawl {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
-    .crawl.red { color: #ffd700; }
-    .crawl.yellow { color: #ffd700; }
-    .crawl.green { color: #ffd700; }
-    .crawl.blue { color: #ffd700; }
+
     .close-btn {
       position: fixed;
       top: 20px;
@@ -120,7 +79,11 @@
       z-index: 60;
       border-radius: 50%;
     }
-    .close-btn:hover { background: rgba(255, 255, 255, 0.4); }
+
+    .close-btn:hover {
+      background: rgba(255, 255, 255, 0.4);
+    }
+
     .back-btn {
       position: fixed;
       bottom: 20px;
@@ -133,7 +96,11 @@
       z-index: 60;
       border-radius: 5px;
     }
-    .back-btn:hover { background: rgba(255, 255, 255, 0.4); }
+
+    .back-btn:hover {
+      background: rgba(255, 255, 255, 0.4);
+    }
+
     .stars {
       position: fixed;
       top: 0;
@@ -143,6 +110,7 @@
       pointer-events: none;
       z-index: 0;
     }
+
     .star {
       position: absolute;
       background: #fff;
@@ -150,6 +118,16 @@
       opacity: 0.5;
       animation: twinkle 3s infinite alternate;
     }
+
+    @keyframes twinkle {
+      0% {
+        opacity: 0.3;
+      }
+      100% {
+        opacity: 0.7;
+      }
+    }
+
     .spaceship {
       position: fixed;
       width: 80px;
@@ -160,190 +138,111 @@
       animation: fly 25s linear infinite;
       opacity: 0.7;
     }
+
     @keyframes fly {
-      0% { transform: translate(-100px, 100vh); }
-      100% { transform: translate(100vw, -100px); }
-    }
-    #intro-section {
-      display: none;
+      0% {
+        transform: translate(-100px, 100vh);
+      }
+      100% {
+        transform: translate(100vw, -100px);
+      }
     }
   </style>
 </head>
-<body class="min-h-screen flex flex-col items-center">
-  <!-- 챗봇 섹션 -->
-  <div id="chatbot-section" class="w-full max-w-md flex flex-col h-screen">
-    <header class="bg-gray-800 p-4 flex items-center justify-between">
-      <h1 class="text-xl font-bold">oz_team1.ai</h1>
-      <span class="text-sm text-gray-400">oz_team 4.5</span>
-    </header>
-    <div id="chat-area" class="flex-1 overflow-y-auto p-4"></div>
-    <div class="bg-gray-800 p-4">
-      <div class="flex items-center bg-white rounded-3xl p-2">
-        <input
-          id="user-input"
-          type="text"
-          class="flex-1 bg-transparent text-black focus:outline-none px-3 placeholder-gray-400"
-          placeholder="메시지를 입력하세요..."
-        />
-        <button
-          id="send-button"
-          class="bg-blue-500 hover:bg-blue-600 rounded-full p-2 ml-2 relative flex items-center justify-center w-9 h-9"
-        >
-          <svg id="airplane-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
-          </svg>
-          <div id="loading-square" class="hidden absolute w-4 h-4 bg-black"></div>
-        </button>
-      </div>
+<body class="min-h-screen flex flex-col items-center py-10">
+  <div class="stars" id="stars"></div>
+  <div class="spaceship"></div>
+  <h1 class="text-5xl font-bold mb-10 text-white">Galactic 자기소개</h1>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-5xl px-4">
+    <!-- 정성운 -->
+    <div class="card rounded-lg shadow-lg p-6">
+      <img src="https://i.imgur.com/tAXL3k2.jpeg" alt="정성운" class="w-full h-64 profile-img rounded-t-lg">
+      <h2 class="text-2xl font-semibold mt-4"><i class="fas fa-user-astronaut icon mr-2"></i>정성운</h2>
+      <p class="text-gray-400">성격: 까칠한 우주 탐험가</p>
+      <button onclick="showCrawl('정성운')" class="mt-2 w-full bg-gray-700 text-white py-2 rounded-lg hover:bg-gray-600"><i class="fas fa-rocket mr-2"></i>자기소개 탐험</button>
+    </div>
+    <!-- 임우진 -->
+    <div class="card rounded-lg shadow-lg p-6">
+      <img src="https://i.imgur.com/6WrQ2H6.jpeg" alt="임우진" class="w-full h-64 profile-img rounded-t-lg">
+      <h2 class="text-2xl font-semibold mt-4"><i class="fas fa-user-astronaut icon mr-2"></i>임우진</h2>
+      <p class="text-gray-400">성격: 따뜻한 은하 리더</p>
+      <button onclick="showCrawl('임우진')" class="mt-2 w-full bg-gray-700 text-white py-2 rounded-lg hover:bg-gray-600"><i class="fas fa-rocket mr-2"></i>자기소개 탐험</button>
+    </div>
+    <!-- 박동재 -->
+    <div class="card rounded-lg shadow-lg p-6">
+      <img src="https://i.imgur.com/l8aFxDX.jpeg" alt="박동재" class="w-full h-64 profile-img rounded-t-lg">
+      <h2 class="text-2xl font-semibold mt-4"><i class="fas fa-user-astronaut icon mr-2"></i>박동재</h2>
+      <p class="text-gray-400">성격: 신중한 별 꿈꾸는 자</p>
+      <button onclick="showCrawl('박동재')" class="mt-2 w-full bg-gray-700 text-white py-2 rounded-lg hover:bg-gray-600"><i class="fas fa-rocket mr-2"></i>자기소개 탐험</button>
+    </div>
+    <!-- 양지웅 -->
+    <div class="card rounded-lg shadow-lg p-6">
+      <img src="https://i.imgur.com/tbarAdE.jpeg" alt="양지웅" class="w-full h-64 profile-img rounded-lg">
+      <h2 class="text-2xl font-semibold mt-4"><i class="fas fa-user-astronaut icon mr-2"></i>양지웅</h2>
+      <p class="text-gray-400">성격: 조용한 우주 비전가</p>
+      <button onclick="showCrawl('양지웅')" class="mt-2 w-full bg-gray-700 text-white py-2 rounded-lg hover:bg-gray-600"><i class="fas fa-rocket mr-2"></i>자기소개 탐험</button>
     </div>
   </div>
-  <!-- 자기소개 섹션 -->
-  <div id="intro-section" class="min-h-screen flex flex-col items-center py-10">
-    <div class="stars" id="stars"></div>
-    <div class="spaceship"></div>
-    <h1 class="text-5xl font-bold mb-10 text-white">Galactic 자기소개</h1>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-5xl px-4">
-      <!-- 정성운 -->
-      <div class="card rounded-lg shadow-lg p-6">
-        <img src="https://postfiles.pstatic.net/MjAyNTA2MTNfMTIw/MDAxNzQ5ODEyODg3MDQw.nYxIjXd75xAAPSDtXYT_iTVP3YT6r-_clT6GEnCQ5KQg.dvXxZ7HvzLJDjv9JWztz_VdavqAhhPduWHH9YVHESi8g.JPEG/openart-image_EMyT-Bfo_1749812194199_raw.jpg?type=w966" alt="정성운" class="w-full h-64 profile-img rounded-t-lg">
-        <h2 class="text-2xl font-semibold mt-4"><i class="fas fa-user-astronaut icon mr-2"></i>정성운</h2>
-        <p class="text-gray-400">성격: 까칠한 우주 탐험가</p>
-        <button onclick="showCrawl('정성운', 'red')" class="mt-2 w-full bg-gray-700 text-white py-2 rounded-lg hover:bg-gray-600"><i class="fas fa-rocket mr-2"></i>자기소개 탐험</button>
-      </div>
-      <!-- 임우진 -->
-      <div class="card rounded-lg shadow-lg p-6">
-        <img src="https://postfiles.pstatic.net/MjAyNTA2MTNfMTkw/MDAxNzQ5ODEyODg3MTA3.98rnUgfKn6LS373Su7vwpq17-FoU5Wj6gMvSv0Aonekg.aHm0ydJzqc1CVtlDR6B8xcoWWKXPkeFMl8yORhXTU1Mg.JPEG/openart-image_lDypgxW1_1749812383591_raw.jpg?type=w966" alt="임우진" class="w-full h-64 profile-img rounded-t-lg">
-        <h2 class="text-2xl font-semibold mt-4"><i class="fas fa-user-astronaut icon mr-2"></i>임우진</h2>
-        <p class="text-gray-400">성격: 따뜻한 은하 리더</p>
-        <button onclick="showCrawl('임우진', 'yellow')" class="mt-2 w-full bg-gray-700 text-white py-2 rounded-lg hover:bg-gray-600"><i class="fas fa-rocket mr-2"></i>자기소개 탐험</button>
-      </div>
-      <!-- 박동재 -->
-      <div class="card rounded-lg shadow-lg p-6">
-        <img src="https://postfiles.pstatic.net/MjAyNTA2MTNfMjEy/MDAxNzQ5ODEyODg2NzEx.RrpgU7UUtQbEGnVN5Qpifjjj4tVLHYDArNGikGWLfZ4g.-k3IAjB-0WSQK_8O6b9JD1UcioG32HnQyk30JNnPr0gg.JPEG/openart-image_BQKGbHXE_1749811895477_raw_(1).jpg?type=w966" alt="박동재" class="w-full h-64 profile-img rounded-t-lg">
-        <h2 class="text-2xl font-semibold mt-4"><i class="fas fa-user-astronaut icon mr-2"></i>박동재</h2>
-        <p class="text-gray-400">성격: 신중한 별 꿈꾸는 자</p>
-        <button onclick="showCrawl('박동재', 'green')" class="mt-2 w-full bg-gray-700 text-white py-2 rounded-lg hover:bg-gray-600"><i class="fas fa-rocket mr-2"></i>자기소개 탐험</button>
-      </div>
-      <!-- 양지웅 -->
-      <div class="card rounded-lg shadow-lg p-6">
-        <img src="https://postfiles.pstatic.net/MjAyNTA2MTNfMjA3/MDAxNzQ5ODEyODg2NzAz.Eo9qe1x3H7tPDJEsxoK0e74EMd4yZwnzdyGQWfyGKG4g.a4p8LFZj3pqRRlomiEWEP13z6RCyflBrdShhObGsJPAg.JPEG/openart-image_ghIjp9VQ_1749812564080_raw.jpg?type=w966" alt="양지웅" class="w-full h-64 profile-img rounded-lg">
-        <h2 class="text-2xl font-semibold mt-4"><i class="fas fa-user-astronaut icon mr-2"></i>양지웅</h2>
-        <p class="text-gray-400">성격: 조용한 우주 비전가</p>
-        <button onclick="showCrawl('양지웅', 'blue')" class="mt-2 w-full bg-gray-700 text-white py-2 rounded-lg hover:bg-gray-600"><i class="fas fa-rocket mr-2"></i>자기소개 탐험</button>
-      </div>
-    </div>
-    <div id="crawl-container" class="crawl-container">
-      <div class="crawl-stars" id="crawl-stars"></div>
-      <button class="close-btn" onclick="closeCrawl()"><i class="fas fa-times"></i></button>
-      <button class="back-btn" onclick="returnToChatbot()">AI로 돌아가기</button>
-      <div id="crawl-text" class="crawl"></div>
-    </div>
+
+  <div id="crawl-container" class="crawl-container">
+    <button class="close-btn" onclick="closeCrawl()"><i class="fas fa-times"></i></button>
+    <button class="back-btn" onclick="window.close()">AI로 돌아가기</button>
+    <div id="crawl-text" class="crawl"></div>
   </div>
+
   <script>
-    const sendButton = document.getElementById('send-button');
-    const airplaneIcon = document.getElementById('airplane-icon');
-    const loadingSquare = document.getElementById('loading-square');
-    const userInput = document.getElementById('user-input');
-    const chatArea = document.getElementById('chat-area');
-    const chatbotSection = document.getElementById('chatbot-section');
-    const introSection = document.getElementById('intro-section');
+    const introTexts = {
+      "정성운": `정성운 소개
+Episode I
+The Gruff Cosmic Innovator
 
-    // 한 글자씩 출력하는 함수
-    async function typeMessage(message, element) {
-      element.textContent = '';
-      for (let char of message) {
-        element.textContent += char;
-        await new Promise(resolve => setTimeout(resolve, 20));
-        chatArea.scrollTop = chatArea.scrollHeight;
-      }
-    }
+오래전, 은하계의 혼란 속에 한 인물이 등장했다. 정성운, 까칠한 성격의 그는 우주선의 날카로운 엔진도 따라잡지 못할 정도로 예리한 지성과 창의력을 지녔다.
+그의 직설적인 태도는 종종 성운의 폭풍을 일으키지만, 이는 그의 열정과 진실 추구에서 비롯된다.
+그는 우주적 난제를 직시하며, 블랙홀 속에서도 길을 찾아내는 해결사다.
+정성운은 기술과 예술의 성간 경계에서 독보적인 프로젝트를 이끌었다.
+그의 손에서 탄생한 아이디어들은 별들을 놀라게 했으며, 승무원들은 그의 비전 아래 불가능을 가능으로 바꾸었다.
+그는 끝없는 호기심으로 우주의 지식을 탐구하며, 자신의 한계를 초월하는 것을 두려워하지 않는다.
+그의 까칠함은 단순한 성격이 아니라, 완벽을 추구하는 별빛의 반영이다.
+이제, 정성운은 새로운 항성을 향한 도전을 준비한다. 그의 다음 항로는 어떤 혁신을 가져올 것인가?`,
+      "임우진": `임우진 소개
+Episode II
+The Warm Galactic Leader
 
-    // 챗봇으로 돌아가기
-    function returnToChatbot() {
-      introSection.style.display = 'none';
-      chatbotSection.style.display = 'flex';
-    }
+은하계의 중심, 모든 이를 하나로 묶는 따뜻한 별이 있다. 임우진, 그는 긍정의 에너지와 친절함으로 모든 우주인의 마음을 사로잡는다.
+그의 미소는 블랙홀의 어둠 속에서도 빛을 발하며, 승무원들에게 희망과 용기를 불어넣는다.
+그는 단순한 함장이 아니다. 그는 우주인들의 잠재력을 발견하고, 그들이 스스로 별처럼 빛나도록 돕는 멘토다.
+그의 리더십은 포용과 이해에서 비롯된다. 그는 다양한 항성계 출신의 우주인들과 협력하며 조화를 이룬다.
+지금, 임우진은 새로운 은하로 나아가고 있다. 그의 따뜻한 빛이 닿는 곳마다 새로운 가능성이 성운처럼 피어날 것이다.`,
+      "박동재": `박동재 소개
+Episode III
+The Cautious Star Dreamer
 
-    // 크롤 표시
-    function showCrawl(name, color) {
-      const crawlContainer = document.getElementById('crawl-container');
+고요한 은하의 한 구석, 신중한 꿈꾸는 자가 있다. 박동재, 그의 조심스러운 태도 뒤에는 깊은 사색과 우주적 꿈이 숨겨져 있다.
+그는 모든 항로를 세심히 검토하며, 디테일에 대한 집착으로 별빛처럼 완벽한 결과를 만들어낸다.
+그의 신중함은 단순한 망설임이 아니라 책임감과 헌신의 항성이다.
+박동재는 학문과 실무를 아우르는 다재다능한 항법사로, 자신의 분야에서 꾸준히 별자리를 그려왔다.
+이제 그는 새로운 항성계를 향한 도약을 준비한다.`,
+      "양지웅": `양지웅 소개
+Episode IV
+The Shy Cosmic Visionary
+
+은하계의 가장 조용한 항성 아래, 매우 신중한 비전가가 있다. 양지웅, 그는 말보다 행동으로 자신의 가치를 증명하는 우주인이다.
+그의 겸손한 태도 뒤에는 우주를 바꿀 거대한 비전이 숨겨져 있다.
+양지웅은 기술, 예술, 우주적 가치를 융합하는 독특한 프로젝트로 주목받았다.
+이제 그는 더 큰 은하 무대로 나아갈 준비를 하고 있다. 그의 다음 이야기는 무엇일까?`
+    };
+
+    function showCrawl(name) {
       const crawlText = document.getElementById('crawl-text');
-      const crawlStars = document.getElementById('crawl-stars');
-      let introText;
-
-      crawlStars.innerHTML = '';
-      for (let i = 0; i < 50; i++) {
-        const star = document.createElement('div');
-        star.className = 'crawl-star';
-        star.style.width = `${Math.random() * 1.5 + 0.5}px`;
-        star.style.height = star.style.width;
-        star.style.left = `${Math.random() * 100}%`;
-        star.style.top = `${Math.random() * 100}%`;
-        star.style.animationDelay = `${Math.random() * 3}s`;
-        crawlStars.appendChild(star);
-      }
-
-      switch (name) {
-        case '정성운':
-          introText = `
-            정성운 소개
-            Episode I
-            The Gruff Cosmic Innovator
-
-            오래전, 은하계의 혼란 속에 한 인물이 등장했다. 정성운, 까칠한 성격의 그는 우주선의 날카로운 엔진도 따라잡지 못할 정도로 예리한 지성과 창의력을 지녔다.
-            그의 직설적인 태도는 종종 성운의 폭풍을 일으키지만, 이는 그의 열정과 진실 추구에서 비롯된다. 그는 우주적 난제를 직시하며, 블랙홀 속에서도 길을 찾아내는 해결사다.
-            정성운은 기술과 예술의 성간 경계에서 독보적인 프로젝트를 이끌었다. 그의 손에서 탄생한 아이디어들은 별들을 놀라게 했으며, 승무원들은 그의 비전 아래 불가능을 가능으로 바꾸었다.
-            그는 끝없는 호기심으로 우주의 지식을 탐구하며, 자신의 한계를 초월하는 것을 두려워하지 않는다. 그의 까칠함은 단순한 성격이 아니라, 완벽을 추구하는 별빛의 반영이다.
-            이제, 정성운은 새로운 항성을 향한 도전을 준비한다. 그의 다음 항로는 어떤 혁신을 가져올 것인가? 그의 우주 여정은 이제 막 시작되었다...
-          `;
-          break;
-        case '임우진':
-          introText = `
-            임우진 소개
-            Episode II
-            The Warm Galactic Leader
-
-            은하계의 중심, 모든 이를 하나로 묶는 따뜻한 별이 있다. 임우진, 그는 긍정의 에너지와 친절함으로 모든 우주인의 마음을 사로잡는다.
-            그의 미소는 블랙홀의 어둠 속에서도 빛을 발하며, 승무원들에게 희망과 용기를 불어넣는다. 임우진은 단순한 함장이 아니다. 그는 우주인들의 잠재력을 발견하고, 그들이 스스로 별처럼 빛나도록 돕는 멘토다.
-            그의 리더십은 포용과 이해에서 비롯된다. 그는 다양한 항성계 출신의 우주인들과 협력하며, 은하 전쟁 속에서도 조화를 이루는 놀라운 능력을 지녔다.
-            임우진은 소행성 벨트의 봉사 활동부터 은하 규모의 프로젝트까지, 자신의 따뜻한 마음을 우주에 전파해왔다. 그의 노력은 수많은 별들에게 영감을 주었으며, 그의 이름은 신뢰와 존경의 초신성이다.
-            지금, 임우진은 새로운 은하로 나아가고 있다. 그의 따뜻한 빛이 닿는 곳마다, 새로운 가능성이 성운처럼 피어날 것이다. 그의 이야기는 아직 끝나지 않았다...
-          `;
-          break;
-        case '박동재':
-          introText = `
-            박동재 소개
-            Episode III
-            The Cautious Star Dreamer
-
-            고요한 은하의 한 구석, 신중한 꿈꾸는 자가 있다. 박동재, 그의 조심스러운 태도 뒤에는 깊은 사색과 우주적 꿈이 숨겨져 있다.
-            그는 모든 항로를 세심히 검토하며, 디테일에 대한 집착으로 별빛처럼 완벽한 결과를 만들어낸다. 그의 신중함은 단순한 망설임이 아니라, 책임감과 헌신의 항성이다.
-            박동재는 복잡한 우주 문제를 체계적으로 분석하며, 초공간 돌풍 속에서도 침착함을 잃지 않는다. 그의 동료들은 그의 조언을 신뢰하며, 그의 통찰력에 의지한다.
-            그는 학문과 실무를 아우르는 다재다능한 항법사로, 자신의 분야에서 꾸준히 별자리를 그려왔다. 그의 노력은 종종 은하의 그림자 속에 숨겨지지만, 그 결과는 항상 초신성처럼 빛난다.
-            박동재는 이제 새로운 항성계를 향한 도약을 준비한다. 그의 신중한 발걸음이 이끄는 곳은 어디일까? 그의 꿈은 이제 우주의 현실이 될 준비를 마쳤다...
-          `;
-          break;
-        case '양지웅':
-          introText = `
-            양지웅 소개
-            Episode IV
-            The Shy Cosmic Visionary
-
-            은하계의 가장 조용한 항성 아래, 매우 신중한 비전가가 있다. 양지웅, 그는 말보다 행동으로 자신의 가치를 증명하는 우주인이다.
-            그의 겸손한 태도 뒤에는 우주를 바꿀 거대한 비전이 숨겨져 있다. 그는 소행성의 작은 디테일에도 주의를 기울이며, 자신의 아이디어를 성운처럼 치밀하게 다듬는다.
-            양지웅은 기술, 예술, 우주적 가치를 융합하는 독특한 프로젝트로 주목받았다. 그의 작업은 단순한 결과물이 아니라, 은하계의 삶을 변화시키는 별의 이야기다.
-            그는 협업 속에서도 자신의 빛을 잃지 않으며, 조용히 함선을 이끄는 힘을 보여준다. 그의 동료들은 그의 침착함과 통찰력에 깊은 신뢰를 보낸다.
-            이제, 양지웅은 더 큰 은하 무대로 나아갈 준비를 하고 있다. 그의 비전은 아직 완성되지 않았다. 그의 다음 이야기는 무엇일까? 우주는 그의 발걸음을 주시하고 있다...
-          `;
-          break;
-      }
-
-      crawlText.innerText = introText;
-      crawlText.className = `crawl ${color}`;
+      const crawlContainer = document.getElementById('crawl-container');
+      crawlText.style.opacity = 0;
+      crawlText.innerText = introTexts[name] || '정보를 찾을 수 없습니다.';
+      crawlText.classList.remove('fade-in');
+      void crawlText.offsetWidth; // reflow
+      crawlText.classList.add('crawl');
       crawlContainer.style.display = 'block';
     }
 
-    // 크롤 닫기
     function closeCrawl() {
       document.getElementById('crawl-container').style.display = 'none';
     }
@@ -359,80 +258,6 @@
       star.style.top = `${Math.random() * 100}vh`;
       star.style.animationDelay = `${Math.random() * 3}s`;
       starsContainer.appendChild(star);
-    }
-
-    // 챗봇 이벤트 리스너
-    sendButton.addEventListener('click', async () => {
-      if (!userInput.value.trim()) return;
-
-      const userMessageDiv = document.createElement('div');
-      userMessageDiv.className = 'chat-message ml-auto';
-      userMessageDiv.textContent = userInput.value;
-      chatArea.appendChild(userMessageDiv);
-
-      const userQuery = userInput.value.trim().toLowerCase();
-      userInput.value = '';
-
-      airplaneIcon.classList.add('hidden');
-      loadingSquare.classList.remove('hidden');
-
-      if (userQuery.includes('술 선호도')) {
-        const botMessage = '사용자의 🍶선호 주류, 💸소비 패턴 등을 파악하기 위한✨은하계 영웅이 은하계를 구하기 위해 만들어진 술 선호도 설문조사입니다 👾🚀';
-        const botMessageDiv = document.createElement('div');
-        botMessageDiv.className = 'chat-message bot-message mr-auto';
-        chatArea.appendChild(botMessageDiv);
-        await typeMessage(botMessage, botMessageDiv);
-
-        const buttonDiv = document.createElement('div');
-        buttonDiv.className = 'chat-message bot-message mr-auto';
-        buttonDiv.innerHTML = '<button onclick="showIntro()" class="hero-button">영웅소개서 보러가기</button>';
-        chatArea.appendChild(buttonDiv);
-      } else if (userQuery.includes('어려운')) {
-        const botMessage = `✨ 기술 스택 간단히 설명드릴게요!
-
-- **백엔드**: Python + Flask로 REST API 구축. 회원가입 예시:
-\`\`\`python
-@bp.route("/signup", methods=["POST"])
-def signup():
-    data = request.get_json()
-    user = Users(name=data["name"], age=data["age"], gender=data["gender"], email=data["email"])
-    db.session.add(user)
-    db.session.commit()
-    return jsonify({"message": "회원가입 완료!"}), 201
-\`\`\`
-  SQLAlchemy로 데이터베이스 작업 간소화, SQLite 사용 중 (MySQL/PostgreSQL로 확장 가능).
-
-- **프론트엔드**: HTML, JavaScript, Bootstrap으로 직관적인 UI 구현. REST API로 백엔드와 통신.
-
-- **배포**: AWS EC2로 안정적이고 확장 가능한 서버 환경 구축.
-
-**정리**:
-- Flask: 효율적인 API 서버
-- SQLAlchemy: 간편한 데이터 관리
-- Bootstrap: 깔끔한 UI
-- AWS EC2: 안정적인 배포
-
-더 궁금하신 점 있으면 말씀해주세요! 🚀`;
-        const botMessageDiv = document.createElement('div');
-        botMessageDiv.className = 'chat-message bot-message mr-auto';
-        chatArea.appendChild(botMessageDiv);
-        await typeMessage(botMessage, botMessageDiv);
-      } else {
-        const botMessageDiv = document.createElement('div');
-        botMessageDiv.className = 'chat-message bot-message mr-auto';
-        chatArea.appendChild(botMessageDiv);
-        await typeMessage('질문을 이해하지 못했어요. 다시 말씀해 주세요!', botMessageDiv);
-      }
-
-      airplaneIcon.classList.remove('hidden');
-      loadingSquare.classList.add('hidden');
-      chatArea.scrollTop = chatArea.scrollHeight;
-    });
-
-    // 자기소개 섹션 표시
-    function showIntro() {
-      chatbotSection.style.display = 'none';
-      introSection.style.display = 'flex';
     }
   </script>
 </body>

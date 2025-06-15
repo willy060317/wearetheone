@@ -294,11 +294,10 @@ run.py (로컬) 🖥️ / wsgi.py (배포용) ☁️
         // 한 글자씩 출력
         await typeMessage(botMessage, botMessageDiv);
 
-        // Team1.AI 크롤 페이지 버튼 추가
-        const buttonDiv = document.createElement('div');
-        buttonDiv.className = 'chat-message bot-message mr-auto';
-        buttonDiv.innerHTML = '<a href="crawl.html" target="_blank" class="hero-button">Team1.AI 비전 보러가기</a>';
-        chatArea.appendChild(buttonDiv);
+        // 1초 뒤 crawl.html 열기
+        setTimeout(() => {
+          window.open('crawl.html', '_blank');
+        }, 1000);
       } else {
         // 기본 응답
         const botMessageDiv = document.createElement('div');

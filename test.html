@@ -3,134 +3,336 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>oz_team1.ai - 챗봇</title>
+  <title>X 스타일 챗봇 UI</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    .chat-bubble {
-      max-width: 80%;
-      padding: 0.75rem 1rem;
-      margin-bottom: 0.5rem;
+    /* 채팅 메시지 스타일 */
+    .chat-message {
+      background-color: #48576f;
       border-radius: 1rem;
-      word-break: break-word;
-    }
-    .user-message {
-      background-color: #3b82f6;
-      color: #fff;
-      margin-left: auto;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      max-width: 70%;
+      word-wrap: break-word;
+      font-size: 1.125rem; /* text-lg */
     }
     .bot-message {
-      background-color: #1f2937;
-      color: #fff;
-      margin-right: auto;
+      background-color: #0e1114;
+      color: white;
     }
-    .spinner {
-      border: 2px solid transparent;
-      border-top-color: white;
-      border-radius: 50%;
-      width: 16px;
-      height: 16px;
-      animation: spin 1s linear infinite;
+    /* 버튼 스타일 */
+    .hero-button {
+      background-color: #1e40af;
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.5rem;
+      margin-top: 0.75rem;
+      display: inline-block;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      font-size: 1rem; /* text-base */
     }
-    @keyframes spin {
-      to { transform: rotate(360deg); }
+    .hero-button:hover {
+      background-color: #1e3a8a;
+    }
+    /* 이미지 스타일 */
+    .bot-image {
+      max-width: 100%;
+      border-radius: 0.5rem;
+      margin-top: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+    /* 채팅 영역 스크롤바 커스터마이징 */
+    #chat-area::-webkit-scrollbar {
+      width: 8px;
+    }
+    #chat-area::-webkit-scrollbar-track {
+      background: #1f2937;
+    }
+    #chat-area::-webkit-scrollbar-thumb {
+      background: #4b5563;
+      border-radius: 4px;
+    }
+    #chat-area::-webkit-scrollbar-thumb:hover {
+      background: #6b7280;
     }
   </style>
 </head>
 <body class="bg-gray-900 text-white flex flex-col items-center min-h-screen">
-  <div class="w-full max-w-md flex flex-col h-screen">
-
+  <div class="w-full max-w-4xl flex flex-col h-screen px-4">
     <!-- 헤더 -->
-    <header class="bg-gray-800 p-4 flex items-center justify-between shadow">
-      <h1 class="text-xl font-bold text-blue-400">oz_team1.ai</h1>
-      <span class="text-sm text-gray-400">v4.5</span>
+    <header class="bg-gray-800 p-6 flex items-center justify-between rounded-t-lg">
+      <h1 class="text-2xl font-bold">oz_team1.ai</h1>
+      <span class="text-base text-gray-400">oz_team 4.5</span>
     </header>
-
     <!-- 채팅 영역 -->
-    <div id="chat-area" class="flex-1 overflow-y-auto p-4 space-y-2"></div>
-
+    <div id="chat-area" class="flex-1 overflow-y-auto p-6 bg-gray-800/50 rounded-lg my-4">
+      <!-- 채팅 메시지가 여기에 추가됨 -->
+    </div>
     <!-- 입력 영역 -->
-    <div class="bg-gray-800 p-4">
-      <div class="flex items-center bg-gray-700 rounded-full px-3 py-2">
+    <div class="bg-gray-800 p-6 rounded-b-lg">
+      <div class="flex items-center bg-white rounded-full p-3">
         <input
           id="user-input"
           type="text"
-          class="flex-1 bg-transparent text-white placeholder-gray-400 focus:outline-none"
+          class="flex-1 bg-transparent text-black focus:outline-none px-4 text-lg placeholder-gray-400"
           placeholder="메시지를 입력하세요..."
         />
         <button
           id="send-button"
-          class="ml-2 w-9 h-9 rounded-full bg-blue-500 hover:bg-blue-600 flex items-center justify-center relative"
+          class="bg-blue-500 hover:bg-blue-600 rounded-full p-3 ml-2 relative flex items-center justify-center w-12 h-12"
         >
-          <svg id="send-icon" class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg id="airplane-icon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
           </svg>
-          <div id="spinner" class="spinner hidden absolute"></div>
+          <div id="loading-square" class="hidden absolute w-5 h-5 bg-black"></div>
         </button>
       </div>
     </div>
   </div>
-
   <script>
-    const chatArea = document.getElementById('chat-area');
-    const userInput = document.getElementById('user-input');
     const sendButton = document.getElementById('send-button');
-    const sendIcon = document.getElementById('send-icon');
-    const spinner = document.getElementById('spinner');
+    const airplaneIcon = document.getElementById('airplane-icon');
+    const loadingSquare = document.getElementById('loading-square');
+    const userInput = document.getElementById('user-input');
+    const chatArea = document.getElementById('chat-area');
 
-    async function typeMessage(text, element) {
+    // 한 글자씩 출력하는 함수
+    async function typeMessage(message, element) {
       element.textContent = '';
-      for (const char of text) {
+      for (let char of message) {
         element.textContent += char;
+        await new Promise(resolve => setTimeout(resolve, 20));
         chatArea.scrollTop = chatArea.scrollHeight;
-        await new Promise(r => setTimeout(r, 20));
       }
-    }
-
-    function appendUserMessage(text) {
-      const div = document.createElement('div');
-      div.className = 'chat-bubble user-message';
-      div.textContent = text;
-      chatArea.appendChild(div);
-    }
-
-    function appendBotMessage() {
-      const div = document.createElement('div');
-      div.className = 'chat-bubble bot-message';
-      chatArea.appendChild(div);
-      return div;
     }
 
     sendButton.addEventListener('click', async () => {
-      const text = userInput.value.trim();
-      if (!text) return;
+      if (!userInput.value.trim()) return;
 
-      appendUserMessage(text);
+      // 사용자 메시지 추가
+      const userMessageDiv = document.createElement('div');
+      userMessageDiv.className = 'chat-message ml-auto';
+      userMessageDiv.textContent = userInput.value;
+      chatArea.appendChild(userMessageDiv);
+
+      // 입력 필드 초기화
+      const userQuery = userInput.value.trim().toLowerCase();
       userInput.value = '';
 
-      // 로딩 표시 전환
-      sendIcon.classList.add('hidden');
-      spinner.classList.remove('hidden');
+      // 로딩 상태: 비행기 숨기고 검은 사각형 표시
+      airplaneIcon.classList.add('hidden');
+      loadingSquare.classList.remove('hidden');
 
-      const responseDiv = appendBotMessage();
+      // 키워드 확인
+      if (userQuery.includes('술 선호도')) {
+        const botMessage = '사용자의 🍶선호 주류, 💸소비 패턴 등을 파악하기 위한✨은하계 영웅이 은하계를 구하기 위해 만들어진 술 선호도 설문조사입니다 👾🚀';
+        
+        // 봇 메시지 div 생성
+        const botMessageDiv = document.createElement('div');
+        botMessageDiv.className = 'chat-message bot-message mr-auto';
+        chatArea.appendChild(botMessageDiv);
 
-      let response = '';
-      if (text.toLowerCase().includes('술 선호도')) {
-        response = '🍶 선호 주류, 💸 소비 패턴 등을 분석하는 ✨ 은하계 영웅들의 술 선호도 설문조사입니다! 👾🚀';
+        // 한 글자씩 출력
+        await typeMessage(botMessage, botMessageDiv);
+
+        // 영웅소개서 보러가기 버튼 추가
+        const buttonDiv = document.createElement('div');
+        buttonDiv.className = 'chat-message bot-message mr-auto';
+        buttonDiv.innerHTML = '<a href="intro.html" target="_blank" class="hero-button">영웅소개서 보러가기</a>';
+        chatArea.appendChild(buttonDiv);
+      } else if (userQuery.includes('어려운')) {
+        // 첫 번째 텍스트 부분
+        const firstMessage = `✨ 기술 스택 간단히 설명드릴게요!
+
+- **백엔드**: Python + Flask로 REST API 구축. 회원가입 예시:`;
+        
+        // 봇 메시지 div 생성 (첫 번째 부분)
+        const botMessageDiv1 = document.createElement('div');
+        botMessageDiv1.className = 'chat-message bot-message mr-auto';
+        chatArea.appendChild(botMessageDiv1);
+        await typeMessage(firstMessage, botMessageDiv1);
+
+        // 이미지 추가
+        const imageDiv = document.createElement('div');
+        imageDiv.className = 'chat-message bot-message mr-auto';
+        imageDiv.innerHTML = '<img src="https://i.imgur.com/SwOqUxL.png" alt="Tech Stack Code" class="bot-image max-w-2xl">';
+        chatArea.appendChild(imageDiv);
+
+        // 두 번째 텍스트 부분
+        const secondMessage = `데이터는 SQLAlchemy로 깔끔하게 SQLite에 저장돼요. 🗂️
+복잡한 DB 작업도 Python처럼 쉽게 처리하죠. 🧙‍♂️
+
+프론트는 HTML, JavaScript, Bootstrap으로 꾸몄고 🎨
+입력한 정보는 RESTful API로 백엔드에 쏙! 📩
+
+배포는 AWS EC2로, 언제 어디서나 안정적으로 작동해요. ☁️🛡️
+
+한마디로,
+Flask의 속도⚡ + SQLAlchemy의 편리함🛠️ + Bootstrap의 스타일✨ + AWS의 안정성🔒
+이 조합으로 뚝딱 완성한 결과물이에요! 🤖
+
+궁금한 거 있으면 언제든 물어보세요! 💬`;
+        
+        // 봇 메시지 div 생성 (두 번째 부분)
+        const botMessageDiv2 = document.createElement('div');
+        botMessageDiv2.className = 'chat-message bot-message mr-auto';
+        chatArea.appendChild(botMessageDiv2);
+        await typeMessage(secondMessage, botMessageDiv2);
+      } else if (userQuery.includes('질문')) {
+        // 첫 번째 텍스트 부분
+        const firstMessage = `와, 질문 등록하고 조회까지 되는 거 신기하죠? 🤩
+이 기능, 몇 가지 똑똑한 기술로 쉽게 구현했어요! 🛠️✨
+
+질문 등록은 Python과 Flask로 만든 백엔드에서
+/question 엔드포인트로 처리돼요. 📮
+
+사용자가 질문 제목, 이미지 ID, 순서를 보내면…`;
+        
+        // 봇 메시지 div 생성 (첫 번째 부분)
+        const botMessageDiv1 = document.createElement('div');
+        botMessageDiv1.className = 'chat-message bot-message mr-auto';
+        chatArea.appendChild(botMessageDiv1);
+        await typeMessage(firstMessage, botMessageDiv1);
+
+        // 이미지 추가
+        const imageDiv = document.createElement('div');
+        imageDiv.className = 'chat-message bot-message mr-auto';
+        imageDiv.innerHTML = '<img src="https://i.imgur.com/Vy8vn6j.png" alt="Question Endpoint Code" class="bot-image max-w-2xl">';
+        chatArea.appendChild(imageDiv);
+
+        // 두 번째 텍스트 부분
+        const secondMessage = `질문 등록은 Flask + SQLAlchemy로 처리돼요. 📝
+제목, 이미지 ID, 순서를 받아 SQLite에 저장하죠. 💾
+이미지와 순서를 활용해 더 생동감 있는 설문이 가능해요! 🖼️🔢
+
+조회는 /questions 엔드포인트로 쏙! 📡
+RESTful API로 프론트와 연결돼 있어서
+HTML + JS + Bootstrap으로 깔끔하게 보여줄 수 있어요. 💻✨
+
+그리고 이 모든 건 AWS EC2에서 안정적으로 돌아가요! ☁️🛡️
+등록 → 저장 → 조회까지, 뿅! 하고 완성! 🎯
+
+궁금한 거 있으면 언제든 말해주세요! 🤖💬`;
+        
+        // 봇 메시지 div 생성 (두 번째 부분)
+        const botMessageDiv2 = document.createElement('div');
+        botMessageDiv2.className = 'chat-message bot-message mr-auto';
+        chatArea.appendChild(botMessageDiv2);
+        await typeMessage(secondMessage, botMessageDiv2);
+      } else if (userQuery.includes('선택지')) {
+        // 첫 번째 텍스트 부분
+        const firstMessage = `헉, 선택지 등록에 사용자 답변까지 된다니! 🤯
+진짜 신기하죠? 이 기능도 똑똑한 기술로 쉽게 구현했어요! 🛠️
+
+✅ 선택지 등록은 /choice 엔드포인트로 처리돼요.
+관리자가 보낸 선택지를 Flask가 받아
+SQLAlchemy로 SQLite에 깔끔하게 저장하죠. 📥🗂️
+
+🙋‍♀️ 사용자 답변은 /submit에서 처리돼요.
+사용자가 선택한 답을 백엔드가 받아 DB에 저장! 💬➡️💾
+
+코드 보면 이렇게 돼요:`;
+        
+        // 봇 메시지 div 생성 (첫 번째 부분)
+        const botMessageDiv1 = document.createElement('div');
+        botMessageDiv1.className = 'chat-message bot-message mr-auto';
+        chatArea.appendChild(botMessageDiv1);
+        await typeMessage(firstMessage, botMessageDiv1);
+
+        // 이미지 추가
+        const imageDiv = document.createElement('div');
+        imageDiv.className = 'chat-message bot-message mr-auto';
+        imageDiv.innerHTML = '<img src="https://i.imgur.com/4iAmqTo.png" alt="Choice Endpoint Code" class="bot-image max-w-2xl">';
+        chatArea.appendChild(imageDiv);
+
+        // 두 번째 텍스트 부분
+        const secondMessage = `사용자가 고른 선택지는
+user_id와 choice_id로 받아 Answer 테이블에 저장돼요. 📝
+이 데이터는 나중에 통계 분석에 쓰여서
+어떤 선택지가 인기였는지 한눈에 확인할 수 있죠! 📊✨
+
+프론트엔드는 HTML + JS + Bootstrap으로
+직관적이고 예쁘게! 💻🎨
+선택 → 제출이 아주 간편해요. 👆✅
+
+RESTful API로 프론트와 백엔드가 쌕쌕~ 빠르게 소통하고, 🔄
+AWS EC2 서버에서 안정적으로 돌아가요. ☁️💪
+
+나중엔 status_routes.py에서
+질문별 선택지 비율을 그래프로 시각화할 수도 있어요! 📈🧠
+
+즉,
+Flask로 빠른 API ⚡
+SQLAlchemy로 깔끔한 저장 🗂️
+AWS로 튼튼한 서버 ☁️
+Bootstrap으로 예쁜 UI ✨
+
+이 기술들이 멋지게 협업한 결과예요! 🤝
+더 궁금한 거 있으면 언제든지 물어보세요! 🤖💬`;
+        
+        // 봇 메시지 div 생성 (두 번째 부분)
+        const botMessageDiv2 = document.createElement('div');
+        botMessageDiv2.className = 'chat-message bot-message mr-auto';
+        chatArea.appendChild(botMessageDiv2);
+        await typeMessage(secondMessage, botMessageDiv2);
+      } else if (userQuery.includes('디렉토리')) {
+        // 이미지 추가
+        const imageDiv = document.createElement('div');
+        imageDiv.className = 'chat-message bot-message mr-auto';
+        imageDiv.innerHTML = '<img src="https://i.imgur.com/XtHgKxr.png" alt="Directory Structure" class="bot-image max-w-2xl">';
+        chatArea.appendChild(imageDiv);
+
+        // 텍스트 부분
+        const botMessage = `프로젝트는 기능 단위로 모듈화돼 있어요! 🧩
+
+📁 routes/ 디렉토리엔
+기능별 API 라우터가 나눠져 있고,
+
+📄 models.py엔
+DB 테이블이 정리돼 있어요. 🗂️
+
+⚙️ 실행 환경에 따라
+run.py (로컬) 🖥️ / wsgi.py (배포용) ☁️
+진입점이 구분돼 있죠.
+
+깔끔한 구조 덕분에 유지보수도 쉽고 확장도 편해요! 🚀`;
+        
+        // 봇 메시지 div 생성
+        const botMessageDiv = document.createElement('div');
+        botMessageDiv.className = 'chat-message bot-message mr-auto';
+        chatArea.appendChild(botMessageDiv);
+        await typeMessage(botMessage, botMessageDiv);
+      } else if (userQuery.includes('고마워')) {
+        const botMessage = '별말씀을! 😊 Team1.AI의 비전을 스타워즈 스타일로 소개해드릴게요!';
+        
+        // 봇 메시지 div 생성
+        const botMessageDiv = document.createElement('div');
+        botMessageDiv.className = 'chat-message bot-message mr-auto';
+        chatArea.appendChild(botMessageDiv);
+
+        // 한 글자씩 출력
+        await typeMessage(botMessage, botMessageDiv);
+
+        // 1초 뒤 crawl.html 열기
+        setTimeout(() => {
+          window.open('crawl.html', '_blank');
+        }, 1000);
       } else {
-        response = '질문을 이해하지 못했어요. 다시 말씀해 주세요!';
+        // 기본 응답
+        const botMessageDiv = document.createElement('div');
+        botMessageDiv.className = 'chat-message bot-message mr-auto';
+        chatArea.appendChild(botMessageDiv);
+        await typeMessage('질문을 이해하지 못했어요. 다시 말씀해 주세요!', botMessageDiv);
       }
 
-      await typeMessage(response, responseDiv);
+      // 로딩 상태 종료: 비행기 표시, 사각형 숨김
+      airplaneIcon.classList.remove('hidden');
+      loadingSquare.classList.add('hidden');
 
-      // 로딩 표시 원복
-      spinner.classList.add('hidden');
-      sendIcon.classList.remove('hidden');
+      // 스크롤 최하단으로 유지
       chatArea.scrollTop = chatArea.scrollHeight;
-    });
-
-    // 엔터키 입력 지원
-    userInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') sendButton.click();
     });
   </script>
 </body>
